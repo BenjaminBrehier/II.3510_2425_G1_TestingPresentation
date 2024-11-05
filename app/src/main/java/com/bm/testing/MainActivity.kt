@@ -59,7 +59,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                 Row {
                     for (j in 0..2) {
                         Button(
-                            onClick = { input += (i + j).toString()+ " " },
+                            onClick = { input += (i + j).toString() },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                             modifier = Modifier
                                 .weight(1f)
@@ -72,7 +72,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
             }
             Row {
                 Button(
-                    onClick = { input += "0 " },
+                    onClick = { input += "0" },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                     modifier = Modifier
                         .weight(1f)
@@ -93,10 +93,10 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
 
             // Boutons opération ligne
             Row {
-                OperationButton(text = "+", onClick = { input += "+ " })
-                OperationButton(text = "-", onClick = { input += "- " })
-                OperationButton(text = "*", onClick = { input += "* " })
-                OperationButton(text = "/", onClick = { input += "/ " })
+                OperationButton(text = "+", onClick = { input += " + " })
+                OperationButton(text = "-", onClick = { input += " - " })
+                OperationButton(text = "*", onClick = { input += " * " })
+                OperationButton(text = "/", onClick = { input += " / " })
                 OperationButton(text = "Clear", onClick = {input = ""})
             }
         }
@@ -105,7 +105,6 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
 
 fun evaluateExpression(expression: String): Double {
     val tokens = expression.split(" ").toMutableList()
-    tokens.removeAt(tokens.lastIndex)
     val numbers = mutableListOf<Double>()
     val operations = mutableListOf<Char>()
 
