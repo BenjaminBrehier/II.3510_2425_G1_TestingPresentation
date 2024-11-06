@@ -10,8 +10,24 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+    // TODO : Check some expression to valid the function “evaluateExpression(expression: String)"
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+
+    }
+
+    @Test
+    fun subtraction_isCorrect() {
+
+    }
+
+    @Test
+    fun multiplication_isCorrect() {
+
+    }
+
+    @Test
+    fun divide_isCorrect() {
+
     }
 }
