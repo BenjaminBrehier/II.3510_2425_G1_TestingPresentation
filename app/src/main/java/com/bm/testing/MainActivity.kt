@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bm.testing.ui.theme.TestingTheme
@@ -86,6 +87,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(4.dp)
+                        .testTag("result_button")
                 ) {
                     Text(text = "=")
                 }
