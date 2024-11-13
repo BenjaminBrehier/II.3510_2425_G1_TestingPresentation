@@ -1,25 +1,57 @@
-package com.bm.testing
-
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withTagValue
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.CoreMatchers.`is`
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.onNodeWithText
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import kotlin.jvm.java
+import com.bm.testing.MainActivity
 
-@RunWith(AndroidJUnit4::class)
-class ExampleIntegrationTests {
+class CalculatorTests {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
     @Test
-    fun button_is_displayed() {
-        onView(withTagValue(`is`("button_0"))).check(matches(withText("0")))
+    fun test_all_buttons_are_displayed() {
+        composeTestRule.onNodeWithTag("button_0").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_1").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_2").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_3").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_4").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_5").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_6").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_7").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_8").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_9").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_equals").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("button_clear").assertIsDisplayed()
+    }
+
+    @Test
+    fun test_input_display() {
+        composeTestRule.onNodeWithTag("button_1").performClick()
+        composeTestRule.onNodeWithTag("button_2").performClick()
+        composeTestRule.onNodeWithTag("input_text").assertExists()
+        composeTestRule.onNodeWithText("12").assertIsDisplayed()
+    }
+
+    @Test
+    fun test_clear_button() {
+        composeTestRule.onNodeWithTag("button_1").performClick()
+        composeTestRule.onNodeWithTag("button_clear").performClick()
+        composeTestRule.onNodeWithTag("input_text").assertExists()
+        composeTestRule.onNodeWithText("").assertIsDisplayed()
+    }
+
+    @Test
+    fun test_evaluate_expression() {
+        composeTestRule.onNodeWithTag("button_2").performClick()
+        composeTestRule.onNodeWithTag("button_3").performClick()
+        composeTestRule.onNodeWithTag("button_plus").performClick()
+        composeTestRule.onNodeWithTag("button_4").performClick()
+        composeTestRule.onNodeWithTag("button_equals").performClick()
+        composeTestRule.onNodeWithTag("result_text").assertExists()
+        composeTestRule.onNodeWithText("27.0").assertIsDisplayed()
     }
 }
