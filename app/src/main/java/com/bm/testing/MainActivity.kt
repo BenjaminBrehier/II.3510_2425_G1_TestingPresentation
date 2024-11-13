@@ -78,6 +78,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(4.dp)
+                        .testTag("button_0")
                 ) {
                     Text(text = "0")
                 }
@@ -87,7 +88,6 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(4.dp)
-                        .testTag("result_button")
                 ) {
                     Text(text = "=")
                 }
