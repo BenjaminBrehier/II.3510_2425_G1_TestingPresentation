@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bm.testing.ui.theme.TestingTheme
@@ -20,7 +21,6 @@ import com.bm.testing.ui.theme.TestingTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             TestingTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -39,33 +39,42 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .testTag("calculator_screen"),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.End
     ) {
         Text(
             text = input,
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Black,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .testTag("input_text"),
+            color = Color.Black
         )
         Text(
             text = result,
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Gray,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .testTag("result_text"),
+            color = Color.Gray
         )
         Column {
             // Lignes de boutons pour les chiffres
             for (i in 1..9 step 3) {
                 Row {
                     for (j in 0..2) {
+                        val number = (i + j).toString()
                         Button(
-                            onClick = { input += (i + j).toString() },
+                            onClick = { input += number },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp)
+                                .testTag("button_$number")
                         ) {
-                            Text(text = (i + j).toString())
+                            Text(text = number)
                         }
                     }
                 }
@@ -77,15 +86,17 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(4.dp)
+                        .testTag("button_0")
                 ) {
                     Text(text = "0")
                 }
                 Button(
-                    onClick = { result = "" + evaluateExpression(input.toString()) },
+                    onClick = { result = evaluateExpression(input.toString()).toString() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                     modifier = Modifier
                         .weight(1f)
                         .padding(4.dp)
+                        .testTag("button_equals")
                 ) {
                     Text(text = "=")
                 }
@@ -97,9 +108,30 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                 OperationButton(text = "-", onClick = { input += " - " })
                 OperationButton(text = "*", onClick = { input += " * " })
                 OperationButton(text = "/", onClick = { input += " / " })
-                OperationButton(text = "Clear", onClick = {input = ""})
+                OperationButton(text = "Clear", onClick = { input = ""; result = "" }, tag = "button_clear")
             }
         }
+    }
+}
+
+@Composable
+fun OperationButton(text: String, onClick: () -> Unit, tag: String? = null) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+        modifier = Modifier
+            .padding(4.dp)
+            .testTag(tag ?: "button_$text")
+    ) {
+        Text(text = text)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CalculatorScreenPreview() {
+    TestingTheme {
+        CalculatorScreen()
     }
 }
 
@@ -152,24 +184,4 @@ fun evaluateExpression(expression: String): Double {
 
 fun String.isDouble(): Boolean {
     return this.toDoubleOrNull() != null
-}
-
-@Composable
-fun OperationButton(text: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-        modifier = Modifier
-            .padding(4.dp)
-    ) {
-        Text(text = text)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CalculatorScreenPreview() {
-    TestingTheme {
-        CalculatorScreen()
-    }
 }
